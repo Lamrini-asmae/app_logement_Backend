@@ -3,6 +3,8 @@ import connectDB from './src/config/db.js';
 import user from './src/models/user.js';
 import userRoutes from './src/routes/userRoutes.js'
 import residenceRoutes from './src/routes/residenceRoutes.js'
+import reservationRoutes from './src/routes/reservationRoutes.js'
+import apartmentRoutes from './src/routes/apartmentRoutes.js'
 
 const router = express.Router();
 
@@ -15,6 +17,8 @@ app.use(express.json());
 connectDB();
 app.use(userRoutes); 
 app.use(residenceRoutes); 
+app.use(apartmentRoutes); 
+app.use(reservationRoutes); 
 
 // Démarrer le serveur
 app.listen(PORT, () => {

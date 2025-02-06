@@ -3,10 +3,10 @@ import express from 'express';
 
 const router = express.Router();
 
-router.get('/residence/', getResidences);
-router.post('/residence/', createResidence);
-router.put('/residence/:id', updateResidence);
-router.delete('/residence/:id', deleteResidence);
-router.get('/residence/:id', getResidenceById);
+router.get('/Residence/', getResidences);
+router.post('/Residence/', createResidence);
+router.put('/Residence/:id', updateResidence);
+router.delete('/Residence/:id', deleteResidence);
+router.get('/Residence/:id', getResidenceById);
 
 export default router;
