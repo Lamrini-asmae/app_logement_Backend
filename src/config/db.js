@@ -6,7 +6,8 @@ const connectDB = async () => {
     // .then(() => console.log(" MongoDB Connected!"))
     // .catch(err => console.log("MongoDB Connection Error:", err))
     try {
-        await mongoose.connect("mongodb://localhost:27017/db_rental_app");
+    await mongoose.connect(process.env.MONGO_URI);
+
         console.log('MongoDB connecté');
       } catch (error) {
         console.error('Erreur de connexion à MongoDB:', error);

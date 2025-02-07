@@ -9,7 +9,8 @@ import apartmentRoutes from './src/routes/apartmentRoutes.js'
 const router = express.Router();
 
 const app = express();
-const PORT=3000 || 5000;
+const PORT = process.env.PORT || 5000;
+
 
 //Middleware
 app.use(express.json());
