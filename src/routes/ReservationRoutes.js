@@ -1,12 +1,16 @@
 import {getReservations,getReservationById,createReservation,updateReservation,deleteReservation} from '../controllers/reservationController.js';
 import express from 'express';
+import { verifyJwt } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/Reservation', getReservations);
-router.post('/Reservation', createReservation);
-router.put('/Reservation/:id', updateReservation);
-router.delete('/Reservation/:id', deleteReservation);
-router.get('/Reservation/:id', getReservationById);
+router.get('/reserve', getReservations);
+router.post('/reserve',verifyJwt, createReservation);
+router.put('/reserve/:id', updateReservation);
+router.delete('/reserve/:id', deleteReservation);
+router.get('/reserve/:id', getReservationById);
 
 export default router;
+
+
+
