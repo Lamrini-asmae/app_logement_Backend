@@ -4,11 +4,11 @@ import { verifyJwt } from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-router.get('/reserve', getReservations);
+router.get('/reserve',verifyJwt, getReservations);
 router.post('/reserve',verifyJwt, createReservation);
-router.put('/reserve/:id', updateReservation);
-router.delete('/reserve/:id', deleteReservation);
-router.get('/reserve/:id', getReservationById);
+router.put('/reserve/:id',verifyJwt, updateReservation);
+router.delete('/reserve/:id',verifyJwt, deleteReservation);
+router.get('/reserve/:id', verifyJwt,getReservationById);
 
 export default router;
 
