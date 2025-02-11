@@ -3,8 +3,11 @@ import mongoose from'mongoose';
 const userSchema = new mongoose.Schema({
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
-    age: { type: Number, required: true},
-    gender: { type: String, required: true},
+    dateofbirth: { 
+        type: Date, 
+        required: true 
+      },
+     gender: { type: String, enum: ['Mm', 'Mme'], default: 'Mm' },
     profession: { type: String, required: true},
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
