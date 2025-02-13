@@ -1,8 +1,18 @@
 import bcrypt from 'bcryptjs';
+import express from 'express';
 import jwt from 'jsonwebtoken';
 import User from '../models/user.js';
 import { body, validationResult } from 'express-validator';
 
+
+//
+function  generateAccessToken({ userId, role }){
+  return jwt.sign(
+    { userId: userId, role: role },
+    process.env.JWT_SECRET,
+    { expiresIn: '12h' }
+  );
+}
 // Register route with validation
 export const register = [
   // Validation rules
@@ -89,16 +99,44 @@ export const login = [
       }
 
       // Generate JWT token
-      const token = jwt.sign(
-        { userId: user._id, role: user.role },
-        process.env.JWT_SECRET,
-        { expiresIn: '12h' }
+      const token =  generateAccessToken({ userId: user._id, role: user.role });
+      // Generate a refresh JWT token
+      const refreshToken = jwt.sign(
+        { userId: user._id },
+        process.env.REFRESH_SECRET,
+        { expiresIn: '7d' } 
       );
-
-      res.json({ token });
+      //save in cookie
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true, 
+        secure: true, // Utiliser "false" en dev si pas en HTTPS
+        sameSite: "Strict",
+      });
+      res.json({ token,refreshToken});
 
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
     }
   }
+  
 ];
+
+export const RefreshToken=[
+  async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+    if (!refreshToken) return res.status(403).json({ message: "No refresh token" });
+  
+    jwt.verify(refreshToken, process.env.REFRESH_SECRET, (err, user) => {
+      if (err) return res.status(403).json({ message: "Invalid refresh token" });
+  
+      const newAccessToken = generateAccessToken({ id: user.id });
+      res.json({ accessToken: newAccessToken });
+    });
+  }
+];
+
+
+app.post('/logout', (req, res) => {
+  res.clearCookie('refresh_token');
+  res.status(200).send('Logged out successfully');
+});
