@@ -136,7 +136,7 @@ export const RefreshToken=[
 ];
 
 
-app.post('/logout', (req, res) => {
-  res.clearCookie('refresh_token');
-  res.status(200).send('Logged out successfully');
-});
+// app.post('/logout', (req, res) => {
+//   res.clearCookie('refresh_token');
+//   res.status(200).send('Logged out successfully');
+// });

@@ -53,3 +53,26 @@ export const getApatmentById = async (req, res) => {
     res.status(500).json({ message: 'Erreur lors de la récupération' });
   }
 };
+
+  //search
+  export const searchApartments = async (req, res) => {
+      try {
+          const { minPrice, maxPrice, available, floor } = req.query;
+  
+          // Construction de la requête
+          let filter = {};
+  
+          if (minPrice) filter.price = { $gte: minPrice };
+          if (maxPrice) filter.price = { ...filter.price, $lte: maxPrice };
+          if (available !== undefined) filter.available = available;
+          if (floor) filter.floor = floor;
+  
+          // Recherche des appartements avec les filtres
+          const apartments = await Apartment.find(filter);
+  
+          res.json(apartments);
+      } catch (err) {
+          res.status(500).json({ message: 'Erreur lors de la recherche des appartements', error: err });
+      }
+  };
+  
