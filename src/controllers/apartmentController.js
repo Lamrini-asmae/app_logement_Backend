@@ -56,23 +56,26 @@ export const getApatmentById = async (req, res) => {
 
   //search
   export const searchApartments = async (req, res) => {
-      try {
-          const { minPrice, maxPrice, available, floor } = req.query;
-  
-          // Construction de la requête
-          let filter = {};
-  
-          if (minPrice) filter.price = { $gte: minPrice };
-          if (maxPrice) filter.price = { ...filter.price, $lte: maxPrice };
-          if (available !== undefined) filter.available = available;
-          if (floor) filter.floor = floor;
-  
-          // Recherche des appartements avec les filtres
-          const apartments = await Apartment.find(filter);
-  
-          res.json(apartments);
-      } catch (err) {
-          res.status(500).json({ message: 'Erreur lors de la recherche des appartements', error: err });
-      }
+    try {
+      const { minPrice, maxPrice, available, floor } = req.query;
+
+      // Convert filters to correct types
+      let filter = {};
+
+      if (minPrice) filter.price = { $gte: Number(minPrice) };
+      if (maxPrice) filter.price = { ...filter.price, $lte: Number(maxPrice) };
+      if (available !== undefined) filter.available = available === 'true'; // Convert string to Boolean
+      if (floor) filter.floor = Number(floor);
+
+      console.log("Filtre appliqué :", filter); // Debugging
+
+      // Search for apartments in MongoDB
+      const apartments = await Apatment.find(filter);
+
+      res.json(apartments);
+  } catch (err) {
+      console.error("Erreur lors de la recherche :", err); // Log the full error
+      res.status(500).json({ message: "Erreur lors de la recherche des appartements", error: err.message });
+  }
   };
   
