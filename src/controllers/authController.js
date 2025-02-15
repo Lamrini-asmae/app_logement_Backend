@@ -135,8 +135,21 @@ export const RefreshToken=[
   }
 ];
 
+export const logout = [
+  async (req, res) => {
+  // Logout API (Backend)
+  try {
+    res.clearCookie('refreshToken', {
+      httpOnly: true,  // Ensures it can't be accessed by JavaScript
+      secure: true,    // Ensure it's only sent over HTTPS (set to false in development if using HTTP)
+      sameSite: 'Strict', // Helps with CSRF protection
+    });
 
-// app.post('/logout', (req, res) => {
-//   res.clearCookie('refresh_token');
-//   res.status(200).send('Logged out successfully');
-// });
+    res.status(200).send('Logged out successfully');
+  } catch (error) {
+    res.status(500).send('Something went wrong while logging out');
+  }
+
+  }
+];
+
