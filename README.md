@@ -1,1 +1,1 @@
-A backend application built with Node.js, Express, MongoDB, and JWT for authentication.
+This is a backend application built using Node.js, Express, MongoDB, and JWT for authentication. It serves as the foundation for a modern web application, offering a robust API for managing users, authentication, and data persistence.
